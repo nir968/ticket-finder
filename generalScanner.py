@@ -1,5 +1,3 @@
-#_____________________________________________________________________________________>
-
 from dotenv import load_dotenv
 import os
 import time
@@ -47,6 +45,7 @@ def create_driver():
     driver = webdriver.Chrome(
          service=Service(ChromeDriverManager().install()), options=chrome_options
          )
+    driver.set_page_load_timeout(60)
     driver.get(URL)
     return driver
 
@@ -84,11 +83,11 @@ while True:
                 already_notified.add(m)
                 print(f"Telegram alert sent: {fix_hebrew(m)}")
 
-            print(f"New matches found, pausing checks for 30 minutes... ")
-            time.sleep(1800)  # 30 minutes 
+            print(f"New matches found, pausing checks for 15 minutes... ")
+            time.sleep(900)  # 15 minutes 
         else:
-            print("No new ticket found, sleeping 180 seconds...")
-            time.sleep(180)  # 3 minutes
+            print("No new ticket found, sleeping 15 minutes...")
+            time.sleep(900)  # 15 minutes
 
     # Ctrl+c...
     except KeyboardInterrupt:
@@ -97,17 +96,30 @@ while True:
 
     # WebDriver errors (e.g. session expired, browser crash)
     except (InvalidSessionIdException, WebDriverException) as e:
-        print(f"WebDriver error occurred: {e}. Restarting driver...")
-        print("No new ticket found, sleeping 120 seconds...")
+        print(f"WebDriver error occurred: {e}")
+        print("Restarting driver in 120 seconds...")
+
         try:
             driver.quit()
-        except Exception as quit_exception:
+        except Exception:
             pass
     
+        time.sleep(120)  # Wait before restarting the driver
+
+        try:
+            driver = create_driver()
+        except Exception as e:
+            print(f"Failed to recreate driver: {e}")
+            print("Will try again in 120 seconds...")
+            time.sleep(120)
+            continue
+
+        continue
+
     # General exception catch
     except Exception as e:
         print(f"An error occurred: {e}")
-        print("No new ticket found, sleeping 120 seconds...")
+        print("Restarting driver in 120 seconds...")
         time.sleep(120)  # Wait before retrying in case of error
         continue
 
