@@ -1,4 +1,4 @@
-<div align="right">
+<div align="left">
 
 # Ticket Scanner & Monitor ⚽🎫
 An automated, robust monitoring system designed to track ticketing platforms for high-demand events. Built with a clean, modular **Object-Oriented Programming (OOP)** architecture, the project includes two specialized scripts: a **General Scanner** for discovering new events, and a **Targeted Scanner** for securing tickets to a specific high-demand event.
