@@ -59,7 +59,7 @@ To run the Sniper Scanner:
 
 
 
-⚠️ #Disclaimer#
+⚠️ ## Disclaimer
 This project is for educational purposes and personal use only. Use responsibly and ensure compliance with the ticketing platform's Terms of Service.
 
 
